@@ -1,5 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using UserService.Domain.Interfaces;
 using UserService.Infrastructure.Persistence;
+using UserService.Infrastructure.Repositories;
+using UserService.Infrastructure.Seeders;
 
 namespace UserService.Infrastructure.Extensions;
 
@@ -10,5 +13,8 @@ public static class ServiceCollectionExtensions
         services.AddDbContext<UserServiceDbContext>(options =>
 
             options.UseNpgsql(configuration.GetConnectionString("DefaultConnection")));
+
+        services.AddScoped<IUserRepository, UserRepository>();
+        services.AddScoped<ISeeder, Seeder>();
     }
 }

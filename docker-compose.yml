@@ -8,6 +8,11 @@ services:
       - "5000:5000"
     environment:
       - ASPNETCORE_HTTP_PORTS=5000
+      - ConnectionStrings__DefaultConnection=Host=user-service-db;Port=5432;Database=user-service-db;Username=postgres;Password=mysecretpassword
+    depends_on:
+      - user-service-db
+    networks:
+      - mynetwork
 
   user-service-db:
     image: postgres:latest
