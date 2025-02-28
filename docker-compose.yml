@@ -6,3 +6,26 @@ services:
     build: ./UserService
     ports:
       - "5000:5000"
+    environment:
+      - ASPNETCORE_HTTP_PORTS=5000
+
+  user-service-db:
+    image: postgres:latest
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=mysecretpassword
+      - POSTGRES_DB=user-service-db
+    ports:
+      - "5432:5432"
+    networks:
+      - mynetwork
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+networks:
+  mynetwork:
+    driver: bridge
+
+volumes:
+  postgres_data:
+    driver: local
