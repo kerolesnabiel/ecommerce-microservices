@@ -1,5 +1,6 @@
 ﻿using FluentValidation;
 using FluentValidation.AspNetCore;
+using UserService.Application.Services;
 
 namespace UserService.Application.Extensions;
 
@@ -13,5 +14,7 @@ public static class ServiceCollectionExtensions
 
         services.AddValidatorsFromAssembly(applicationAssembly)
             .AddFluentValidationAutoValidation();
+
+        services.AddScoped<JwtService>();
     }
 }

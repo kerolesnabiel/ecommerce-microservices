@@ -1,15 +1,17 @@
 ﻿using MediatR;
+using UserService.Application.Services;
+using UserService.Application.Users.DTOs;
 using UserService.Domain.Entities;
 using UserService.Domain.Interfaces;
 
 namespace UserService.Application.Users.Commands.RegisterUser;
 
 public class RegisterUserCommandHandler(ILogger<RegisterUserCommandHandler> logger,
-    IUserRepository userRepository
-
-       ) : IRequestHandler<RegisterUserCommand>
+    IUserRepository userRepository,
+    JwtService jwtService
+       ) : IRequestHandler<RegisterUserCommand, UserTokenDto>
 {
-    public async Task Handle(RegisterUserCommand request, CancellationToken cancellationToken)
+    public async Task<UserTokenDto> Handle(RegisterUserCommand request, CancellationToken cancellationToken)
     {
         logger.LogInformation("Registering a new user");
 
@@ -25,6 +27,14 @@ public class RegisterUserCommandHandler(ILogger<RegisterUserCommandHandler> logg
             CreatedAt = DateTime.UtcNow,
         };
 
-        await userRepository.AddAsync(user);
+        user = await userRepository.AddAsync(user);
+
+        var token = new UserTokenDto()
+        {
+            Token = jwtService.GenerateToken(user),
+            TokenExpiryMinutes = jwtService.GetTokenExpiryMinutes()
+        };
+
+        return token;
     }
 }

@@ -4,14 +4,18 @@ using UserService.Application.Users.Commands.RegisterUser;
 
 namespace UserService.Presentation.Controllers;
 
-[Route("api/[controller]")]
+[Route("api/users")]
 [ApiController]
 public class UsersController(IMediator mediator): ControllerBase
 {
-    [HttpPost]
-    public async Task<IActionResult> RegisterUser(RegisterUserCommand command)
+    [HttpPost("register")]
+    public async Task<IActionResult> RegisterUserAsync(RegisterUserCommand command)
     {
-        await mediator.Send(command);
-        return Ok();
+        var token = await mediator.Send(command);
+        return Ok(new
+        {
+            token = token.Token,
+            expiryMinutes = token.TokenExpiryMinutes
+        });
     }
 }
