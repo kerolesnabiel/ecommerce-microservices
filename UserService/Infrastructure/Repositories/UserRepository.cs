@@ -1,4 +1,5 @@
-﻿using UserService.Domain.Entities;
+﻿using Microsoft.EntityFrameworkCore;
+using UserService.Domain.Entities;
 using UserService.Domain.Interfaces;
 using UserService.Infrastructure.Persistence;
 
@@ -11,5 +12,10 @@ internal class UserRepository(UserServiceDbContext dbContext) : IUserRepository
         dbContext.Users.Add(user);
         await dbContext.SaveChangesAsync();
         return user;
+    }
+
+    public async Task<User?> GetByEmailAsync(string email)
+    {
+        return await dbContext.Users.FirstOrDefaultAsync(u => u.Email == email);
     }
 }
