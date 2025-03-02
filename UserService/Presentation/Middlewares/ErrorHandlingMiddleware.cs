@@ -24,6 +24,12 @@ public class ErrorHandlingMiddleware(ILogger<ErrorHandlingMiddleware> logger) : 
             context.Response.StatusCode = 401;
             await context.Response.WriteAsJsonAsync(new { error = ex.Message });
         }
+        catch (UnauthorizedException ex)
+        {
+            logger.LogWarning(ex.Message);
+            context.Response.StatusCode = 401;
+            await context.Response.WriteAsJsonAsync(new { error = ex.Message });
+        }
         catch (Exception ex)
         {
             logger.LogError(ex.Message, ex);
