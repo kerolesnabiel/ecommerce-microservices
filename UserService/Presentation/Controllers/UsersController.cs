@@ -1,6 +1,8 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using UserService.Application.Users.Commands.LoginUser;
+using UserService.Application.Users.Commands.LogoutUser;
 using UserService.Application.Users.Commands.RefreshToken;
 using UserService.Application.Users.Commands.RegisterUser;
 
@@ -29,5 +31,14 @@ public class UsersController(IMediator mediator): ControllerBase
     {
         var token = await mediator.Send(command);
         return Ok(token.ToObject());
+    }
+
+
+    [HttpPost("logout")]
+    [Authorize]
+    public async Task<IActionResult> Logout()
+    {
+        await mediator.Send(new LogoutUserCommand());
+        return NoContent();
     }
 }

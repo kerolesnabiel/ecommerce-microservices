@@ -19,6 +19,12 @@ internal class UserRepository(UserServiceDbContext dbContext) : IUserRepository
         return await dbContext.Users.FirstOrDefaultAsync(u => u.Email == email);
     }
 
+    public async Task<User?> GetByIdAsync(Guid Id)
+    {
+        return await dbContext.Users
+            .SingleOrDefaultAsync(u => u.Id == Id);
+    }
+
     public async Task<User?> GetByRefreshTokenAsync(string refreshToken)
     {
         return await dbContext.Users
