@@ -25,11 +25,11 @@ public class LoginUserCommandHandler(
         if (!isPasswordValid)
             throw new IncorrectException("Email or password");
 
-        var token = new UserTokenDto()
-        {
-            Token = jwtService.GenerateToken(user),
-            TokenExpiryMinutes = jwtService.GetTokenExpiryMinutes()
-        };
+        var token = jwtService.GetUserTokenDto(user);
+
+        user.RefreshToken = token.RefreshToken;
+        user.RefreshTokenExpiry = DateTime.UtcNow.AddDays(token.RefreshTokenExpiryDays);
+        await userRepository.UpdateAsync(user);
 
         return token;
     }

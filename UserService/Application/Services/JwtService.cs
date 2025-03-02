@@ -3,6 +3,7 @@ using System.Security.Cryptography;
 using System.Security.Claims;
 using Microsoft.IdentityModel.Tokens;
 using UserService.Domain.Entities;
+using UserService.Application.Users.DTOs;
 namespace UserService.Application.Services;
 
 public class JwtService
@@ -47,6 +48,30 @@ public class JwtService
         return new JwtSecurityTokenHandler().WriteToken(token);
     }
 
+    public string GenerateRefreshToken()
+    {
+        var randomBytes = new byte[64];
+        using (var rng = RandomNumberGenerator.Create())
+        {
+            rng.GetBytes(randomBytes);
+        }
+        return Convert.ToBase64String(randomBytes);
+    }
+
     public int GetTokenExpiryMinutes() =>
-        int.Parse(configuration["JwtSettings:TokenExpiryMinutes"]!);
+        int.Parse(configuration["JwtSettings:TokenExpiryMinutes"]!);    
+
+    public int GetRefreshTokenExpiryDays() =>
+        int.Parse(configuration["JwtSettings:RefreshTokenExpiryDays"]!);
+
+    public UserTokenDto GetUserTokenDto(User user)
+    {
+        return new UserTokenDto
+            {
+                Token = GenerateToken(user),
+                TokenExpiryMinutes = GetTokenExpiryMinutes(),
+                RefreshToken = GenerateRefreshToken(),
+                RefreshTokenExpiryDays = GetRefreshTokenExpiryDays()
+            };
+    }
 }
