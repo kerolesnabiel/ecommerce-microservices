@@ -9,8 +9,15 @@ class UserServiceDbContext : DbContext
     {}
 
     public DbSet<User> Users { get; set; } = default!;
+    public DbSet<Address> Addresses { get; set; } = default!;
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
+
+        modelBuilder.Entity<User>()
+            .HasMany(u => u.Addresses)
+            .WithOne(a => a.User)
+            .HasForeignKey(a => a.UserId);
     }
 }
