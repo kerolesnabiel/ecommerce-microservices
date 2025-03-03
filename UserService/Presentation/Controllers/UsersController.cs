@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using UserService.Application.Users.Commands.ChangePassword;
 using UserService.Application.Users.Commands.UpdateUser;
+using UserService.Application.Users.Queries.GetUser;
 
 namespace UserService.Presentation.Controllers;
 
@@ -9,6 +10,13 @@ namespace UserService.Presentation.Controllers;
 [ApiController]
 public class UsersController(IMediator mediator) : ControllerBase
 {
+    [HttpGet("me")]
+    public async Task<IActionResult> UpdateUserAsync()
+    {
+        var user = await mediator.Send(new GetUserQuery());
+        return Ok(user);
+    }
+
     [HttpPut("me")]
     public async Task<IActionResult> UpdateUserAsync(UpdateUserCommand command)
     {

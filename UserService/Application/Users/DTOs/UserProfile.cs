@@ -11,5 +11,7 @@ public class UserProfile : Profile
         CreateMap<UpdateUserCommand, User>()
             .ForAllMembers(options =>
                 options.Condition((src, dest, srcMember) => srcMember != null));
+
+        CreateMap<User, UserDto>();
     }
 }
