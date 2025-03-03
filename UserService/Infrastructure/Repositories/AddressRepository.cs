@@ -13,4 +13,9 @@ internal class AddressRepository(UserServiceDbContext dbContext) : IAddressRepos
         await dbContext.SaveChangesAsync();
         return address;
     }
+
+    public async Task<IEnumerable<Address>> GetByUserIdAsync(Guid userId)
+    {
+        return await dbContext.Addresses.Where(a => a.UserId == userId).ToListAsync();
+    }
 }

@@ -9,5 +9,6 @@ public class AddressProfile : Profile
     public AddressProfile()
     {
         CreateMap<AddAddressCommand, Address>();
+        CreateMap<Address, AddressDto>();
     }
 }
