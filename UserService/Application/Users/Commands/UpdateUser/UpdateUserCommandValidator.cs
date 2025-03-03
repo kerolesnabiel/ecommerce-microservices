@@ -16,9 +16,10 @@ public class UpdateUserCommandValidator : AbstractValidator<UpdateUserCommand>
             .MaximumLength(25)
             .When(x => x.LastName != null);
 
-        RuleFor(x => x.PhoneNumber)
-            .MaximumLength(15)
-            .When(x => x.PhoneNumber != null);
+        RuleFor(a => a.PhoneNumber)
+            .NotEmpty()
+            .Matches(@"^\+?[1-9]\d{1,14}$")
+            .WithMessage("Phone number must be in a valid international format.");
 
         RuleFor(x => x)
             .Must(x => x.FirstName != null || x.LastName != null || x.PhoneNumber != null)
