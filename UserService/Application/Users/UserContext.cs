@@ -19,9 +19,8 @@ public class UserContext(IHttpContextAccessor httpContextAccessor) : IUserContex
             throw new UnauthorizedException();
 
         var userId = user.FindFirst(c => c.Type == ClaimTypes.NameIdentifier)!.Value;
-        var username = user.FindFirst(c => c.Type == ClaimTypes.Name)!.Value;
         var role = user.FindFirst(c => c.Type == ClaimTypes.Role)!.Value;
 
-        return new CurrentUser(Guid.Parse(userId), username, role);
+        return new CurrentUser(Guid.Parse(userId), role);
     }
 }

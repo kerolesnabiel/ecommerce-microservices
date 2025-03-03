@@ -19,8 +19,6 @@ public class RegisterUserCommandHandler(ILogger<RegisterUserCommandHandler> logg
 
         var usr1 = await userRepository.GetByEmailAsync(request.Email);
         if (usr1 != null) throw new BadRequestException("Email is already used");
-        var usr2 = await userRepository.GetByUsernameAsync(request.Username);
-        if(usr2 != null) throw new BadRequestException("Username is already used");
 
         string hashed = BCrypt.Net.BCrypt.HashPassword(request.Password);
 
@@ -28,7 +26,6 @@ public class RegisterUserCommandHandler(ILogger<RegisterUserCommandHandler> logg
         {
             FirstName = request.FirstName,
             LastName = request.LastName,
-            Username = request.Username,
             Email = request.Email,
             PasswordHash = hashed,
             CreatedAt = DateTime.UtcNow,

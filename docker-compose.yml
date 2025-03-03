@@ -9,12 +9,6 @@ services:
     environment:
       - ASPNETCORE_HTTP_PORTS=5000
       - ConnectionStrings__DefaultConnection=Host=user-service-db;Port=5432;Database=user-service-db;Username=postgres;Password=mysecretpassword
-      - JwtSettings__Issuer=http://user-service
-      - JwtSettings__Audience=http://other-services
-      - JwtSettings__PrivateKeyPath=./private_key.pem
-      - JwtSettings__PublicKeyPath=./public_key.pem
-      - JwtSettings__TokenExpiryMinutes=60
-      - JwtSettings__RefreshTokenExpiryDays=7
     depends_on:
       - user-service-db
     networks:

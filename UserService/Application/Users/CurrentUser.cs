@@ -1,5 +1,5 @@
 ﻿namespace UserService.Application.Users;
 
-public record CurrentUser(Guid Id, string Username, string Role)
+public record CurrentUser(Guid Id, string Role)
 {
 }
