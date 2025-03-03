@@ -2,6 +2,7 @@
 using UserService.Application.Services;
 using UserService.Application.Users.DTOs;
 using UserService.Domain.Entities;
+using UserService.Domain.Exceptions;
 using UserService.Domain.Interfaces;
 
 namespace UserService.Application.Users.Commands.RegisterUser;
@@ -14,6 +15,12 @@ public class RegisterUserCommandHandler(ILogger<RegisterUserCommandHandler> logg
     public async Task<UserTokenDto> Handle(RegisterUserCommand request, CancellationToken cancellationToken)
     {
         logger.LogInformation("Registering a new user");
+
+
+        var usr1 = await userRepository.GetByEmailAsync(request.Email);
+        if (usr1 != null) throw new BadRequestException("Email is already used");
+        var usr2 = await userRepository.GetByUsernameAsync(request.Username);
+        if(usr2 != null) throw new BadRequestException("Username is already used");
 
         string hashed = BCrypt.Net.BCrypt.HashPassword(request.Password);
 

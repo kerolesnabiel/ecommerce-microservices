@@ -16,9 +16,9 @@ internal class UserRepository(UserServiceDbContext dbContext) : IUserRepository
 
     public async Task<User?> GetByEmailAsync(string email)
     {
-        return await dbContext.Users.FirstOrDefaultAsync(u => u.Email == email);
+        return await dbContext.Users.SingleOrDefaultAsync(u => u.Email == email);
     }
-
+    
     public async Task<User?> GetByIdAsync(Guid Id)
     {
         return await dbContext.Users
