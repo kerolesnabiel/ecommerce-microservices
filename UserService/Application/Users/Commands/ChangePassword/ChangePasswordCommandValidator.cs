@@ -1,24 +1,12 @@
 ﻿using FluentValidation;
 
-namespace UserService.Application.Users.Commands.RegisterUser;
+namespace UserService.Application.Users.Commands.ChangePassword;
 
-public class RegisterUserCommandValidator : AbstractValidator<RegisterUserCommand>
+public class ChangePasswordCommandValidator : AbstractValidator<ChangePasswordCommand>
 {
-    public RegisterUserCommandValidator()
+    public ChangePasswordCommandValidator()
     {
-        RuleFor(u => u.FirstName)
-            .NotEmpty()
-            .MaximumLength(25);
-
-        RuleFor(u => u.LastName)
-            .NotEmpty()
-            .MaximumLength(25);
-
-        RuleFor(u => u.Email)
-            .NotEmpty()
-            .EmailAddress();
-
-        RuleFor(u => u.Password)
+        RuleFor(x => x.NewPassword)
             .NotEmpty()
             .MinimumLength(8)
             .MaximumLength(255)
@@ -26,5 +14,6 @@ public class RegisterUserCommandValidator : AbstractValidator<RegisterUserComman
             .Matches(@"[a-z]").WithMessage("Password must contain at least one lowercase letter.")
             .Matches(@"\d").WithMessage("Password must contain at least one number.")
             .Matches(@"[\W_]").WithMessage("Password must contain at least one special character.");
+
     }
 }
