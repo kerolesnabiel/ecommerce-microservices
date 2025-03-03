@@ -30,7 +30,19 @@ public class ErrorHandlingMiddleware(ILogger<ErrorHandlingMiddleware> logger) : 
             context.Response.StatusCode = 401;
             await context.Response.WriteAsJsonAsync(new { error = ex.Message });
         }
+        catch (ForbiddenException ex)
+        {
+            logger.LogWarning(ex.Message);
+            context.Response.StatusCode = 403;
+            await context.Response.WriteAsJsonAsync(new { error = ex.Message });
+        }
         catch (UserNotFoundException ex)
+        {
+            logger.LogWarning(ex.Message);
+            context.Response.StatusCode = 404;
+            await context.Response.WriteAsJsonAsync(new { error = ex.Message });
+        }
+        catch (AddressNotFoundException ex)
         {
             logger.LogWarning(ex.Message);
             context.Response.StatusCode = 404;

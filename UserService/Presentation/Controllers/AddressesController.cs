@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using UserService.Application.Addresses.Commands.AddAddress;
+using UserService.Application.Addresses.Queries.GetAddressById;
 using UserService.Application.Addresses.Queries.GetAddresses;
 
 namespace UserService.Presentation.Controllers;
@@ -19,9 +20,16 @@ public class AddressesController(IMediator mediator) : ControllerBase
     }
     
     [HttpGet]
-    public async Task<IActionResult> GetAddress()
+    public async Task<IActionResult> GetAddresses()
     {
         var addresses = await mediator.Send(new GetAddressesCommand());
+        return Ok(addresses);
+    }
+    
+    [HttpGet("{id}")]
+    public async Task<IActionResult> GetAddressById([FromRoute] Guid id)
+    {
+        var addresses = await mediator.Send(new GetAddressByIdCommand(id));
         return Ok(addresses);
     }
 }
