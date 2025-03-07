@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using UserService.Application.Addresses.Commands.AddAddress;
+using UserService.Application.Addresses.Commands.UpdateAddress;
 using UserService.Application.Addresses.Queries.GetAddressById;
 using UserService.Application.Addresses.Queries.GetAddresses;
 
@@ -31,5 +32,13 @@ public class AddressesController(IMediator mediator) : ControllerBase
     {
         var addresses = await mediator.Send(new GetAddressByIdCommand(id));
         return Ok(addresses);
+    }
+
+    [HttpPut("{id}")]
+    public async Task<IActionResult> UpdateAddress([FromRoute] Guid id, UpdateAddressCommand command)
+    {
+        command.Id = id;
+        await mediator.Send(command);
+        return NoContent();
     }
 }
