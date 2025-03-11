@@ -18,5 +18,7 @@ public class SellerAccountProfile : Profile
                 options.MapFrom(c => c.DateOfBirth.HasValue ? c.DateOfBirth.Value.ToUniversalTime() : (DateTime?)null))
             .ForAllMembers(options =>
                 options.Condition((src, dest, srcMember) => srcMember != null));
+
+        CreateMap<SellerAccount, SellerAccountDto>();
     }
 }

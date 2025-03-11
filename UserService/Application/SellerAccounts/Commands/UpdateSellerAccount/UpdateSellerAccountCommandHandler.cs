@@ -24,6 +24,7 @@ public class UpdateSellerAccountCommandHandler(
             ?? throw new SellerNotFoundException(currentUser.Id.ToString());
 
         mapper.Map(request, sellerAccount);
+        sellerAccount.UpdatedAt = DateTime.UtcNow;
 
         await sellerAccountRepository.UpdateAsync(sellerAccount);
     }

@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using UserService.Application.SellerAccounts.Commands.AddSellerAccount;
 using UserService.Application.SellerAccounts.Commands.UpdateSellerAccount;
+using UserService.Application.SellerAccounts.Queries.GetSellerAccount;
 
 namespace UserService.Presentation.Controllers;
 
@@ -23,5 +24,12 @@ public class SellerAccountsController(IMediator mediator) : ControllerBase
     {
         await mediator.Send(command);
         return NoContent();
+    }
+
+    [HttpGet]
+    public async Task<IActionResult> GetSellerAccount()
+    {
+        var res = await mediator.Send(new GetSellerAccountQuery());
+        return Ok(res);
     }
 }
