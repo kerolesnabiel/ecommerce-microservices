@@ -19,4 +19,11 @@ internal class SellerAccountRepository(UserServiceDbContext dbContext) : ISeller
         return await dbContext.SellerAccounts
             .FirstOrDefaultAsync(x => x.UserId == userId);
     }
+
+    public async Task<SellerAccount> UpdateAsync(SellerAccount sellerAccount)
+    {
+        dbContext.SellerAccounts.Update(sellerAccount);
+        await dbContext.SaveChangesAsync();
+        return sellerAccount;
+    }
 }
