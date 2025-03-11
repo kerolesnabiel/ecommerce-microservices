@@ -20,5 +20,6 @@ public class SellerAccountProfile : Profile
                 options.Condition((src, dest, srcMember) => srcMember != null));
 
         CreateMap<SellerAccount, SellerAccountDto>();
+        CreateMap<SellerAccount, SellerAccountMiniDto>();
     }
 }

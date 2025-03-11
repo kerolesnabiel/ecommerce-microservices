@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using UserService.Application.SellerAccounts.Commands.AddSellerAccount;
 using UserService.Application.SellerAccounts.Commands.UpdateSellerAccount;
 using UserService.Application.SellerAccounts.Queries.GetSellerAccount;
+using UserService.Application.SellerAccounts.Queries.GetSellerAccountById;
 
 namespace UserService.Presentation.Controllers;
 
@@ -30,6 +31,14 @@ public class SellerAccountsController(IMediator mediator) : ControllerBase
     public async Task<IActionResult> GetSellerAccount()
     {
         var res = await mediator.Send(new GetSellerAccountQuery());
+        return Ok(res);
+    }
+    
+    [HttpGet("/api/sellers/{id}")]
+    [AllowAnonymous]
+    public async Task<IActionResult> GetSellerAccountById([FromRoute] Guid id)
+    {
+        var res = await mediator.Send(new GetSellerAccountByIdQuery(id));
         return Ok(res);
     }
 }
