@@ -20,4 +20,5 @@ public class User {
     public DateTime? RefreshTokenExpiry { get; set; }
 
     public ICollection<Address> Addresses { get; set; } = [];
+    public SellerAccount? SellerAccount { get; set; }
 }
