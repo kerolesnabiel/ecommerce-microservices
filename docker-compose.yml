@@ -8,6 +8,15 @@ services:
   user-service-db:
     image: postgres:latest
 
+  product-service:
+    image: ${DOCKER_REGISTRY-}product-service
+    build:
+      context: .
+      dockerfile: ProductService/Dockerfile
+
+  product-service-db:
+    image: postgres:latest
+
 networks:
   mynetwork:
     driver: bridge

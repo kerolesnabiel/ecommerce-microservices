@@ -27,3 +27,32 @@ services:
       - mynetwork
     volumes:
       - postgres_data:/var/lib/postgresql/data
+
+  product-service:
+    environment:
+      - ConnectionStrings__DefaultConnection=Host=product-service-db;Port=5432;Database=product-service-db;Username=postgres;Password=mysecretpassword
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_HTTP_PORTS=8080
+      - ASPNETCORE_HTTPS_PORTS=8081
+    ports:
+      - "6010:8080"
+      - "6011:8081"
+    volumes:
+      - ${APPDATA}/Microsoft/UserSecrets:/home/app/.microsoft/usersecrets:ro
+      - ${APPDATA}/ASP.NET/Https:/home/app/.aspnet/https:ro
+    depends_on:
+      - product-service-db
+    networks:
+      - mynetwork
+
+  product-service-db:
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=mysecretpassword
+      - POSTGRES_DB=product-service-db
+    ports:
+      - "5433:5432"
+    networks:
+      - mynetwork
+    volumes:
+      - postgres_data:/var/lib/postgresql/data

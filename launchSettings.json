@@ -4,7 +4,8 @@
       "commandName": "DockerCompose",
       "commandVersion": "1.0",
       "serviceActions": {
-        "user-service": "StartDebugging"
+        "user-service": "StartDebugging",
+        "product-service": "StartDebugging"
       }
     }
   }
