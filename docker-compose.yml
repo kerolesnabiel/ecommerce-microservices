@@ -22,5 +22,5 @@ networks:
     driver: bridge
 
 volumes:
-  postgres_data:
-    driver: local
+  user_service_postgres_data:
+  product_service_postgres_data:
