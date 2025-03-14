@@ -1,4 +1,5 @@
 using ProductService.Behaviors;
+using ProductService.Middlewares;
 
 var builder = WebApplication.CreateBuilder(args);
 var assembly = typeof(Program).Assembly;
@@ -16,8 +17,10 @@ builder.Services.AddMarten(cfg => cfg.Connection
     .UseLightweightSessions();
 
 builder.Services.AddCarter();
+builder.Services.AddScoped<ErrorHandlingMiddleware>();
 
 var app = builder.Build();
 
+app.UseMiddleware<ErrorHandlingMiddleware>();
 app.MapCarter();
 app.Run();
