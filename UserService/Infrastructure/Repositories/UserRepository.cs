@@ -28,6 +28,7 @@ internal class UserRepository(UserServiceDbContext dbContext) : IUserRepository
     public async Task<User?> GetByRefreshTokenAsync(string refreshToken)
     {
         return await dbContext.Users
+            .Include(u => u.SellerAccount)
             .SingleOrDefaultAsync(u => u.RefreshToken == refreshToken);
     }
 

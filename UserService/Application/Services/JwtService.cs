@@ -29,12 +29,15 @@ public class JwtService
         var securityKey = new RsaSecurityKey(privateKey);
         var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.RsaSha256);
 
-        var claims = new[]
-        {
-            new Claim(JwtRegisteredClaimNames.Sub, user.Id.ToString()),
-            new Claim(ClaimTypes.Role, user.Role),
-            new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
-        };
+        List<Claim> claims =
+        [
+            new (JwtRegisteredClaimNames.Sub, user.Id.ToString()),
+            new (ClaimTypes.Role, user.Role),
+            new (JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
+        ];
+
+        var sellerId = user.SellerAccount?.Id.ToString();
+        if (sellerId != null) claims.Add(new Claim("SellerId", sellerId));
 
         var token = new JwtSecurityToken(
             issuer: configuration["JwtSettings:Issuer"],

@@ -1,7 +1,6 @@
 ﻿using MediatR;
 using UserService.Application.Services;
 using UserService.Application.Users.DTOs;
-using UserService.Domain.Entities;
 using UserService.Domain.Exceptions;
 using UserService.Domain.Interfaces;
 
@@ -10,6 +9,7 @@ namespace UserService.Application.Users.Commands.LoginUser;
 public class LoginUserCommandHandler(
     ILogger<LoginUserCommandHandler> logger,
     IUserRepository userRepository,
+    ISellerAccountRepository sellerAccountRepository,
     JwtService jwtService) 
         : IRequestHandler<LoginUserCommand, UserTokenDto>
 {
@@ -25,6 +25,8 @@ public class LoginUserCommandHandler(
         if (!isPasswordValid)
             throw new IncorrectException("Email or password");
 
+        user.SellerAccount = await sellerAccountRepository.GetByUserIdAsync(user.Id);
+        ;
         var token = jwtService.GetUserTokenDto(user);
 
         user.RefreshToken = token.RefreshToken;
