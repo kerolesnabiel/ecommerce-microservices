@@ -10,7 +10,10 @@ namespace UserService.Presentation.Controllers;
 
 [Route("api/users")]
 [ApiController]
-public class AuthController(IMediator mediator): ControllerBase
+public class AuthController(
+    IMediator mediator, 
+    IWebHostEnvironment env, 
+    IConfiguration configuration) : ControllerBase
 {
     [HttpPost("register")]
     public async Task<IActionResult> RegisterUserAsync(RegisterUserCommand command)
@@ -40,5 +43,21 @@ public class AuthController(IMediator mediator): ControllerBase
     {
         await mediator.Send(new LogoutUserCommand());
         return NoContent();
+    }
+
+    [HttpGet("public-key")]
+    public IActionResult GetPublicKey()
+    {
+        string publicKeyPath = Path.Combine(env.ContentRootPath, "public_key.pem");
+
+        if (!System.IO.File.Exists(publicKeyPath))
+            return NotFound(new { error = "Public key not found" });
+
+        var publicKey = System.IO.File.ReadAllText(publicKeyPath);
+        return Ok(new { 
+            publicKey,
+            issuer = configuration["JwtSettings:Issuer"],
+            audience = configuration["JwtSettings:Audience"]
+        });
     }
 }
