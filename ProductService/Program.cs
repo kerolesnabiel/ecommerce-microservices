@@ -1,6 +1,7 @@
 using ProductService.Behaviors;
 using ProductService.Middlewares;
 using ProductService.Extensions;
+using ProductService.User;
 
 var builder = WebApplication.CreateBuilder(args);
 var assembly = typeof(Program).Assembly;
@@ -22,6 +23,9 @@ builder.Services.AddScoped<ErrorHandlingMiddleware>();
 
 builder.Services.AddAuthorization();
 builder.Services.AddAuthenticationService(builder.Configuration);
+
+builder.Services.AddHttpContextAccessor();
+builder.Services.AddScoped<IUserContext, UserContext>();
 
 var app = builder.Build();
 

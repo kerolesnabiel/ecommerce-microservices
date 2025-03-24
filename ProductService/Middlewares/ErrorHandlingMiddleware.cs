@@ -1,4 +1,6 @@
-﻿namespace ProductService.Middlewares;
+﻿using ProductService.Exceptions;
+
+namespace ProductService.Middlewares;
 
 public class ErrorHandlingMiddleware : IMiddleware
 {
@@ -13,6 +15,11 @@ public class ErrorHandlingMiddleware : IMiddleware
             await HandleExceptionAsync(context, 
                 new (400, ex.Errors.Select(e => 
                     new ErrorDetails(e.ErrorMessage, e.PropertyName))));
+        }
+        catch (UnauthorizedException ex)
+        {
+            await HandleExceptionAsync(context, new ErrorResponse(401,
+                [new(ex.Message, ex.Source?.ToString() ?? "Unknown")]));
         }
         catch (Exception ex)
         {
