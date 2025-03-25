@@ -1,8 +1,7 @@
-﻿namespace ProductService.Features.Products;
+﻿namespace ProductService.Features.Products.CreateProduct;
 
 public class CreateProductCommand : IRequest<Guid>
 {
-    public Guid SellerId { get; set; }
     public string Name { get; set; } = default!;
     public string Description { get; set; } = string.Empty;
     public decimal Price { get; set; } = default!;

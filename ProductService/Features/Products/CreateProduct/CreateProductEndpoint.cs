@@ -1,4 +1,4 @@
-﻿namespace ProductService.Features.Products;
+﻿namespace ProductService.Features.Products.CreateProduct;
 
 public class CreateProductEndpoint() : ICarterModule
 {
