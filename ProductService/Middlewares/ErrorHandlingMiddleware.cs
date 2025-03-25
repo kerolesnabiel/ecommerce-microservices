@@ -26,6 +26,16 @@ public class ErrorHandlingMiddleware : IMiddleware
             await HandleExceptionAsync(context, new ErrorResponse(401,
                 [new(ex.Message, ex.Source?.ToString() ?? "Unknown")]));
         }
+        catch (ForbiddenException ex)
+        {
+            await HandleExceptionAsync(context, new ErrorResponse(403,
+                [new(ex.Message, ex.Source?.ToString() ?? "Unknown")]));
+        }
+        catch (ProductNotFoundException ex)
+        {
+            await HandleExceptionAsync(context, new ErrorResponse(404,
+                [new(ex.Message, ex.Source?.ToString() ?? "Unknown")]));
+        }
         catch (Exception ex)
         {
             await HandleExceptionAsync(context, new ErrorResponse(500, 
