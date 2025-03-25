@@ -16,6 +16,11 @@ public class ErrorHandlingMiddleware : IMiddleware
                 new (400, ex.Errors.Select(e => 
                     new ErrorDetails(e.ErrorMessage, e.PropertyName))));
         }
+        catch (BadHttpRequestException ex)
+        {
+            await HandleExceptionAsync(context, new ErrorResponse(400,
+                [new(ex.Message, ex.Source?.ToString() ?? "Unknown")]));
+        }
         catch (UnauthorizedException ex)
         {
             await HandleExceptionAsync(context, new ErrorResponse(401,

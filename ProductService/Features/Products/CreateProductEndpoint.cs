@@ -14,6 +14,6 @@ public class CreateProductEndpoint() : ICarterModule
         .WithName("CreateProduct")
         .Produces(StatusCodes.Status201Created)
         .ProducesProblem(StatusCodes.Status400BadRequest)
-        ;
+        .RequireAuthorization();
     }
 }
