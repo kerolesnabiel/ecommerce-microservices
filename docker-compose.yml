@@ -1,21 +1,36 @@
 services:
   user-service:
+    container_name: user-service
     image: ${DOCKER_REGISTRY-}user-service
     build:
       context: .
       dockerfile: UserService/Dockerfile
 
   user-service-db:
-    image: postgres:latest
+    container_name: user-service-db
+    image: postgres
 
   product-service:
+    container_name: product-service
     image: ${DOCKER_REGISTRY-}product-service
     build:
       context: .
       dockerfile: ProductService/Dockerfile
 
   product-service-db:
-    image: postgres:latest
+    container_name: product-service-db
+    image: postgres
+
+  cart-service:
+    image: ${DOCKER_REGISTRY-}cart-service
+    container_name: cart-service
+    build:
+      context: .
+      dockerfile: CartService/Dockerfile
+
+  cart-service-db:
+    container_name: cart-service-db
+    image: postgres
 
 networks:
   mynetwork:
@@ -24,3 +39,4 @@ networks:
 volumes:
   user_service_postgres_data:
   product_service_postgres_data:
+  cart_service_postgres_data:

@@ -5,7 +5,8 @@
       "commandVersion": "1.0",
       "serviceActions": {
         "user-service": "StartDebugging",
-        "product-service": "StartDebugging"
+        "product-service": "StartDebugging",
+        "cart-service": "StartDebugging"
       }
     }
   }

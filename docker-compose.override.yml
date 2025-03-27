@@ -57,3 +57,33 @@ services:
       - mynetwork
     volumes:
       - product_service_postgres_data:/var/lib/postgresql/data
+
+  cart-service:
+    environment:
+      - ConnectionStrings__DefaultConnection=Host=cart-service-db;Port=5432;Database=cart-service-db;Username=postgres;Password=mysecretpassword
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_HTTP_PORTS=8080
+      - ASPNETCORE_HTTPS_PORTS=8081
+      - PublicKeyUrl=http://user-service:8080/api/users/public-key
+    ports:
+      - "6020:8080"
+      - "6021:8081"
+    volumes:
+      - ${APPDATA}/Microsoft/UserSecrets:/home/app/.microsoft/usersecrets:ro
+      - ${APPDATA}/ASP.NET/Https:/home/app/.aspnet/https:ro
+    depends_on:
+      - cart-service-db
+    networks:
+      - mynetwork
+
+  cart-service-db:
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=mysecretpassword
+      - POSTGRES_DB=cart-service-db
+    ports:
+      - "5434:5432"
+    networks:
+      - mynetwork
+    volumes:
+      - cart_service_postgres_data:/var/lib/postgresql/data
