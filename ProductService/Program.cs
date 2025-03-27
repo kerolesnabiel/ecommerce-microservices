@@ -27,6 +27,8 @@ builder.Services.AddAuthenticationService(builder.Configuration);
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddScoped<IUserContext, UserContext>();
 
+builder.Services.AddGrpc();
+
 var app = builder.Build();
 
 app.UseAuthentication();
@@ -34,4 +36,5 @@ app.UseAuthorization();
 
 app.UseMiddleware<ErrorHandlingMiddleware>();
 app.MapCarter();
+app.MapGrpcService<ProductService.gRPC.Services.ProductService>();
 app.Run();
