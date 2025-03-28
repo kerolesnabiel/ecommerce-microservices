@@ -19,6 +19,11 @@ public class ErrorHandlingMiddleware : IMiddleware
             await HandleExceptionAsync(context, new ErrorResponse(400,
                 [new(ex.Message, ex.Source?.ToString() ?? "Unknown")]));
         }
+        catch (UnauthorizedAccessException ex)
+        {
+            await HandleExceptionAsync(context, new ErrorResponse(401,
+                [new(ex.Message, ex.Source?.ToString() ?? "Unknown")]));
+        }
         catch (Exception ex)
         {
             await HandleExceptionAsync(context, new ErrorResponse(500,
