@@ -1,4 +1,5 @@
 ﻿using CartService.Behaviors;
+using CartService.Data;
 using CartService.Middlewares;
 
 namespace CartService.Extensions;
@@ -23,5 +24,7 @@ public static class ServiceCollectionExtensions
 
         services.AddCarter();
         services.AddScoped<ErrorHandlingMiddleware>();
+
+        services.AddScoped<ICartRepository, CartRepository>();
     }
 }
