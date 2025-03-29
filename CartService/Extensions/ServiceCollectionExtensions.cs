@@ -1,5 +1,6 @@
 ﻿using CartService.Behaviors;
 using CartService.Data;
+using CartService.DTOs;
 using CartService.Middlewares;
 using ProductService;
 
@@ -27,6 +28,8 @@ public static class ServiceCollectionExtensions
         services.AddScoped<ErrorHandlingMiddleware>();
 
         services.AddScoped<ICartRepository, CartRepository>();
+
+        MappingProfile.Configure();
 
         services.AddGrpcClient<ProductServiceProto.ProductServiceProtoClient>(options =>
         {
