@@ -1,6 +1,7 @@
 ﻿using CartService.Behaviors;
 using CartService.Data;
 using CartService.Middlewares;
+using ProductService;
 
 namespace CartService.Extensions;
 
@@ -26,5 +27,18 @@ public static class ServiceCollectionExtensions
         services.AddScoped<ErrorHandlingMiddleware>();
 
         services.AddScoped<ICartRepository, CartRepository>();
+
+        services.AddGrpcClient<ProductServiceProto.ProductServiceProtoClient>(options =>
+        {
+            options.Address = new Uri(configuration["ProductServiceUrl"]!);
+        })
+        .ConfigurePrimaryHttpMessageHandler(() =>
+        {
+            return new HttpClientHandler
+            {
+                ServerCertificateCustomValidationCallback =
+                HttpClientHandler.DangerousAcceptAnyServerCertificateValidator
+            };
+        });
     }
 }

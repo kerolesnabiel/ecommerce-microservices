@@ -1,32 +1,49 @@
 ﻿using CartService.Data;
 using CartService.Models;
 using CartService.User;
+using ProductService;
 
 namespace CartService.Features.Cart.AddItemToCart;
 
 public class AddItemToCartCommandHandler(
-    ICartRepository cartRepository, IUserContext userContext) 
+    ICartRepository cartRepository, IUserContext userContext,
+    ProductServiceProto.ProductServiceProtoClient productService) 
         : IRequestHandler<AddItemToCartCommand>
 {
     public async Task Handle(AddItemToCartCommand request, CancellationToken cancellationToken)
     {
-        var currentUser = userContext.GetCurrentUser();
+        var product = await productService.GetProductAsync(new GetProductRequest { Id = request.ProductId }, cancellationToken: cancellationToken);
 
-        // Check for product availability
+        if (product.StockQuantity < request.Quantity)
+            throw new BadHttpRequestException($"Insufficient stock: Requested {request.Quantity} but only {product.StockQuantity} items are available.");
+
+        var currentUser = userContext.GetCurrentUser();
+        var cart = await cartRepository.GetByIdAsync(currentUser.Id)
+            ?? new() { Id = currentUser.Id };
 
         CartItem cartItem = request.Adapt<CartItem>();
-        var cart = await cartRepository.GetByIdAsync(currentUser.Id);
-        if(cart != null)
-        {
-            cart.Items.Add(cartItem);
-            cart.UpdatedAt = DateTime.UtcNow;
-            await cartRepository.UpdateCartAsync(cart, cancellationToken);
-        }
+        cartItem.Price = (decimal)product.Price;
+
+        var existingItem = cart.Items.FirstOrDefault(x => x.ProductId == cartItem.ProductId);
+
+        if (existingItem != null)
+            ValidateAndUpdateItemQuantity(existingItem, request.Quantity, product);
         else
-        {
-            cart = new(currentUser.Id);
             cart.Items.Add(cartItem);
-            await cartRepository.AddCartAsync(cart, cancellationToken);
+
+        cart.UpdatedAt = DateTime.UtcNow;
+        await cartRepository.AddCartAsync(cart, cancellationToken);
+    }
+
+    private void ValidateAndUpdateItemQuantity(CartItem existingItem, int requestedQuantity, GetProductResponse product)
+    {
+        if (existingItem.Quantity + requestedQuantity > product.StockQuantity)
+        {
+            throw new BadHttpRequestException(
+                $"Insufficient stock: You currently have {existingItem.Quantity} of this item in your cart. You can only add {product.StockQuantity - existingItem.Quantity} more, but you are trying to add {requestedQuantity}. Available stock: {product.StockQuantity}.");
         }
+
+        existingItem.Quantity += requestedQuantity;
+        existingItem.Price = (decimal)product.Price;
     }
 }

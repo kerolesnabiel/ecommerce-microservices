@@ -14,10 +14,4 @@ public class CartRepository(IDocumentSession session) : ICartRepository
         session.Store(cart);
         await session.SaveChangesAsync(cancellationToken);
     }
-
-    public async Task UpdateCartAsync(Cart cart, CancellationToken cancellationToken = default)
-    {
-        session.Update(cart);
-        await session.SaveChangesAsync(cancellationToken);
-    }
 }

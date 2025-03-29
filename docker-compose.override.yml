@@ -65,6 +65,7 @@ services:
       - ASPNETCORE_HTTP_PORTS=8080
       - ASPNETCORE_HTTPS_PORTS=8081
       - PublicKeyUrl=http://user-service:8080/api/users/public-key
+      - ProductServiceUrl=https://product-service:8081
     ports:
       - "6020:8080"
       - "6021:8081"

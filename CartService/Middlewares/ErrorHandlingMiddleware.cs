@@ -1,4 +1,7 @@
-﻿namespace CartService.Middlewares;
+﻿using Grpc.Core;
+using System.Net;
+
+namespace CartService.Middlewares;
 
 public class ErrorHandlingMiddleware : IMiddleware
 {
@@ -23,6 +26,17 @@ public class ErrorHandlingMiddleware : IMiddleware
         {
             await HandleExceptionAsync(context, new ErrorResponse(401,
                 [new(ex.Message, ex.Source?.ToString() ?? "Unknown")]));
+        }
+        catch (RpcException ex)
+        {
+            var status = ex.StatusCode switch
+            {
+                StatusCode.NotFound => HttpStatusCode.NotFound,
+                _ => HttpStatusCode.BadRequest,
+            };
+
+            await HandleExceptionAsync(context, new ErrorResponse((int)status,
+                [new(ex.Status.Detail ?? ex.Message, ex.Source?.ToString() ?? "Unknown")]));
         }
         catch (Exception ex)
         {

@@ -5,7 +5,7 @@ option csharp_namespace = "ProductService";
 package product;
 
 service ProductServiceProto {
-	rpc GetProduct (GetProductRequest) returns (GetProductResponse) {}
+	rpc GetProduct (GetProductRequest) returns (GetProductResponse);
 }
 
 message GetProductRequest {
