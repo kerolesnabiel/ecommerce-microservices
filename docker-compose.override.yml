@@ -13,8 +13,6 @@ services:
       - ${APPDATA}/ASP.NET/Https:/home/app/.aspnet/https:ro
     depends_on:
       - user-service-db
-    networks:
-      - mynetwork
 
   user-service-db:
     environment:
@@ -23,8 +21,6 @@ services:
       - POSTGRES_DB=user-service-db
     ports:
       - "5432:5432"
-    networks:
-      - mynetwork
     volumes:
       - user_service_postgres_data:/var/lib/postgresql/data
 
@@ -43,8 +39,6 @@ services:
       - ${APPDATA}/ASP.NET/Https:/home/app/.aspnet/https:ro
     depends_on:
       - product-service-db
-    networks:
-      - mynetwork
 
   product-service-db:
     environment:
@@ -53,8 +47,6 @@ services:
       - POSTGRES_DB=product-service-db
     ports:
       - "5433:5432"
-    networks:
-      - mynetwork
     volumes:
       - product_service_postgres_data:/var/lib/postgresql/data
 
@@ -66,6 +58,7 @@ services:
       - ASPNETCORE_HTTPS_PORTS=8081
       - PublicKeyUrl=http://user-service:8080/api/users/public-key
       - ProductServiceUrl=https://product-service:8081
+      - ConnectionStrings__Redis=distributed-cache:6379
     ports:
       - "6020:8080"
       - "6021:8081"
@@ -74,8 +67,7 @@ services:
       - ${APPDATA}/ASP.NET/Https:/home/app/.aspnet/https:ro
     depends_on:
       - cart-service-db
-    networks:
-      - mynetwork
+      - distributed-cache
 
   cart-service-db:
     environment:
@@ -84,7 +76,10 @@ services:
       - POSTGRES_DB=cart-service-db
     ports:
       - "5434:5432"
-    networks:
-      - mynetwork
     volumes:
       - cart_service_postgres_data:/var/lib/postgresql/data
+
+  distributed-cache:
+    restart: always
+    ports:
+      - "6379:6379"

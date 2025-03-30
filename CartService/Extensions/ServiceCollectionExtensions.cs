@@ -28,6 +28,10 @@ public static class ServiceCollectionExtensions
         services.AddScoped<ErrorHandlingMiddleware>();
 
         services.AddScoped<ICartRepository, CartRepository>();
+        services.Decorate<ICartRepository, CachedCartRepository>();
+
+        services.AddStackExchangeRedisCache(options =>
+            options.Configuration = configuration.GetConnectionString("Redis"));
 
         MappingProfile.Configure();
 

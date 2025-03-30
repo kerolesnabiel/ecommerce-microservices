@@ -32,9 +32,9 @@ services:
     container_name: cart-service-db
     image: postgres
 
-networks:
-  mynetwork:
-    driver: bridge
+  distributed-cache:
+    container_name: distributed-cache
+    image: redis
 
 volumes:
   user_service_postgres_data:
