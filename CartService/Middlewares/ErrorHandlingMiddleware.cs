@@ -1,4 +1,5 @@
-﻿using Grpc.Core;
+﻿using CartService.Exceptions;
+using Grpc.Core;
 using System.Net;
 
 namespace CartService.Middlewares;
@@ -25,6 +26,16 @@ public class ErrorHandlingMiddleware : IMiddleware
         catch (UnauthorizedAccessException ex)
         {
             await HandleExceptionAsync(context, new ErrorResponse(401,
+                [new(ex.Message, ex.Source?.ToString() ?? "Unknown")]));
+        }
+        catch (NotFoundException ex)
+        {
+            await HandleExceptionAsync(context, new ErrorResponse(404,
+                [new(ex.Message, ex.Source?.ToString() ?? "Unknown")]));
+        }
+        catch (InsufficientStockException ex)
+        {
+            await HandleExceptionAsync(context, new ErrorResponse(409,
                 [new(ex.Message, ex.Source?.ToString() ?? "Unknown")]));
         }
         catch (RpcException ex)

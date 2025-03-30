@@ -1,4 +1,5 @@
 ﻿using CartService.Data;
+using CartService.Exceptions;
 using CartService.Models;
 using CartService.User;
 using ProductService;
@@ -15,7 +16,7 @@ public class AddItemToCartCommandHandler(
         var product = await productService.GetProductAsync(new GetProductRequest { Id = request.ProductId }, cancellationToken: cancellationToken);
 
         if (product.StockQuantity < request.Quantity)
-            throw new BadHttpRequestException($"Insufficient stock: Requested {request.Quantity} but only {product.StockQuantity} items are available.");
+            throw new InsufficientStockException(request.Quantity, product.StockQuantity);
 
         var currentUser = userContext.GetCurrentUser();
         var cart = await cartRepository.GetByIdAsync(currentUser.Id)
@@ -38,10 +39,7 @@ public class AddItemToCartCommandHandler(
     private void ValidateAndUpdateItemQuantity(CartItem existingItem, int requestedQuantity, GetProductResponse product)
     {
         if (existingItem.Quantity + requestedQuantity > product.StockQuantity)
-        {
-            throw new BadHttpRequestException(
-                $"Insufficient stock: You currently have {existingItem.Quantity} of this item in your cart. You can only add {product.StockQuantity - existingItem.Quantity} more, but you are trying to add {requestedQuantity}. Available stock: {product.StockQuantity}.");
-        }
+            throw new InsufficientStockException(requestedQuantity, product.StockQuantity, existingItem.Quantity);
 
         existingItem.Quantity += requestedQuantity;
         existingItem.Price = (decimal)product.Price;
