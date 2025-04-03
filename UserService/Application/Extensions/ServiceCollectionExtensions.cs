@@ -1,7 +1,7 @@
-﻿using FluentValidation;
-using FluentValidation.AspNetCore;
+﻿using BuildingBlocks.Behaviors;
+using BuildingBlocks.User;
+using FluentValidation;
 using UserService.Application.Services;
-using UserService.Application.Users;
 
 namespace UserService.Application.Extensions;
 
@@ -11,10 +11,12 @@ public static class ServiceCollectionExtensions
     {
         var applicationAssembly = typeof(ServiceCollectionExtensions).Assembly;
 
-        services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(applicationAssembly));
+        services.AddMediatR(cfg => {
+            cfg.RegisterServicesFromAssembly(applicationAssembly);
+            cfg.AddOpenBehavior(typeof(ValidationBehavior<,>));
+        });
 
-        services.AddValidatorsFromAssembly(applicationAssembly)
-            .AddFluentValidationAutoValidation();
+        services.AddValidatorsFromAssembly(applicationAssembly);
 
         services.AddAutoMapper(applicationAssembly);
 
