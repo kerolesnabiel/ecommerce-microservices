@@ -1,0 +1,18 @@
+syntax = "proto3";
+option csharp_namespace = "PaymentService";
+package payment;
+
+service PaymentServiceProto {
+  rpc Charge (ChargeRequest) returns (ChargeResponse);
+}
+
+message ChargeRequest {
+  string user_id = 1;
+  double amount = 2;
+  string currency = 3;
+  string card_token = 4;
+}
+
+message ChargeResponse {
+  string transaction_id = 1;
+}

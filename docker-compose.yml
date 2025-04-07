@@ -32,6 +32,13 @@ services:
     container_name: cart-service-db
     image: postgres
 
+  payment-service:
+    image: ${DOCKER_REGISTRY-}payment-service
+    container_name: payment-service
+    build:
+      context: .
+      dockerfile: PaymentService/Dockerfile
+
   distributed-cache:
     container_name: distributed-cache
     image: redis

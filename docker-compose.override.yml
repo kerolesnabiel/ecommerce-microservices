@@ -83,3 +83,17 @@ services:
     restart: always
     ports:
       - "6379:6379"
+
+  payment-service:
+    environment:
+      - Stripe__PublishableKey=your_stripe_public_key
+      - Stripe__SecretKey=your_stripe_secret_key
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_HTTP_PORTS=8080
+      - ASPNETCORE_HTTPS_PORTS=8081
+    ports:
+      - "6030:8080"
+      - "6031:8081"
+    volumes:
+      - ${APPDATA}/Microsoft/UserSecrets:/home/app/.microsoft/usersecrets:ro
+      - ${APPDATA}/ASP.NET/Https:/home/app/.aspnet/https:ro

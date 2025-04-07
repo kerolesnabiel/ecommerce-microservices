@@ -13,6 +13,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CartService", "CartService\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BuildingBlocks", "BuildingBlocks\BuildingBlocks.csproj", "{F9300AC8-C7C6-481E-8660-A0BC941F1170}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PaymentService", "PaymentService\PaymentService.csproj", "{FC2F535D-5BEA-49C5-840C-F84C0AD9FA85}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +41,10 @@ Global
 		{F9300AC8-C7C6-481E-8660-A0BC941F1170}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F9300AC8-C7C6-481E-8660-A0BC941F1170}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F9300AC8-C7C6-481E-8660-A0BC941F1170}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FC2F535D-5BEA-49C5-840C-F84C0AD9FA85}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FC2F535D-5BEA-49C5-840C-F84C0AD9FA85}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FC2F535D-5BEA-49C5-840C-F84C0AD9FA85}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FC2F535D-5BEA-49C5-840C-F84C0AD9FA85}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
