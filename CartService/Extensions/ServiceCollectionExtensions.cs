@@ -2,7 +2,8 @@
 using BuildingBlocks.Behaviors;
 using CartService.Data;
 using CartService.DTOs;
-using ProductService;
+using static PaymentService.PaymentServiceProto;
+using static ProductService.ProductServiceProto;
 
 namespace CartService.Extensions;
 
@@ -35,17 +36,20 @@ public static class ServiceCollectionExtensions
 
         MappingProfile.Configure();
 
-        services.AddGrpcClient<ProductServiceProto.ProductServiceProtoClient>(options =>
-        {
-            options.Address = new Uri(configuration["ProductServiceUrl"]!);
-        })
+        services.AddGrpcClient<ProductServiceProtoClient>(options => options.Address = new Uri(configuration["ProductServiceUrl"]!))
         .ConfigurePrimaryHttpMessageHandler(() =>
-        {
-            return new HttpClientHandler
+            new HttpClientHandler
             {
                 ServerCertificateCustomValidationCallback =
                 HttpClientHandler.DangerousAcceptAnyServerCertificateValidator
-            };
-        });
+            });
+
+        services.AddGrpcClient<PaymentServiceProtoClient>(options => options.Address = new Uri(configuration["PaymentServiceUrl"]!))
+        .ConfigurePrimaryHttpMessageHandler(() =>
+            new HttpClientHandler
+            {
+                ServerCertificateCustomValidationCallback =
+                HttpClientHandler.DangerousAcceptAnyServerCertificateValidator
+            });
     }
 }

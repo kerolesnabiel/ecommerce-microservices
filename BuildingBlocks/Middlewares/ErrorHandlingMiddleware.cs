@@ -53,7 +53,8 @@ public class ErrorHandlingMiddleware
                 _ => HttpStatusCode.BadRequest,
             };
 
-            await HandleErrorAsync(context, (int)status, "RPC Error", ex.Message);
+            await HandleErrorAsync(context, (int)status, "RPC Error", 
+               ex.Status.Detail ?? ex.Message);
         }
         catch (Exception ex)
         {
