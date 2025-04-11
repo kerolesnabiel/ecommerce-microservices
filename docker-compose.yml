@@ -32,6 +32,17 @@ services:
     container_name: cart-service-db
     image: postgres
 
+  order-service:
+    image: ${DOCKER_REGISTRY-}order-service
+    container_name: order-service
+    build:
+      context: .
+      dockerfile: OrderService/Dockerfile
+
+  order-service-db:
+    container_name: order-service-db
+    image: postgres
+
   payment-service:
     image: ${DOCKER_REGISTRY-}payment-service
     container_name: payment-service
@@ -47,3 +58,4 @@ volumes:
   user_service_postgres_data:
   product_service_postgres_data:
   cart_service_postgres_data:
+  order_service_postgres_data:

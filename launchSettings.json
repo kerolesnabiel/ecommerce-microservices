@@ -6,7 +6,9 @@
       "serviceActions": {
         "user-service": "StartDebugging",
         "product-service": "StartDebugging",
-        "cart-service": "StartDebugging"
+        "cart-service": "StartDebugging",
+        "payment-service": "StartDebugging",
+        "order-service": "StartDebugging"
       }
     }
   }
