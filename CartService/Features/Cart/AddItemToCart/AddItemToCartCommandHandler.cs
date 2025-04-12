@@ -23,6 +23,8 @@ public class AddItemToCartCommandHandler(
             ?? new() { Id = currentUser.Id };
 
         CartItem cartItem = request.Adapt<CartItem>();
+        cartItem.Name = product.Name;
+        cartItem.Image = product.Image;
         cartItem.Price = (decimal)product.Price;
 
         var existingItem = cart.Items.FirstOrDefault(x => x.ProductId == cartItem.ProductId);
