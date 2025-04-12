@@ -54,6 +54,10 @@ services:
     container_name: distributed-cache
     image: redis
 
+  message-broker:
+    container_name: message-broker
+    image: rabbitmq:management
+
 volumes:
   user_service_postgres_data:
   product_service_postgres_data:

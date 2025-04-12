@@ -4,6 +4,7 @@ using CartService.Data;
 using CartService.DTOs;
 using static PaymentService.PaymentServiceProto;
 using static ProductService.ProductServiceProto;
+using BuildingBlocks.Extensions;
 
 namespace CartService.Extensions;
 
@@ -51,5 +52,7 @@ public static class ServiceCollectionExtensions
                 ServerCertificateCustomValidationCallback =
                 HttpClientHandler.DangerousAcceptAnyServerCertificateValidator
             });
+
+        services.AddMassTransitService(configuration);
     }
 }
