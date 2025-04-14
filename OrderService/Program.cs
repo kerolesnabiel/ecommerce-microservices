@@ -26,9 +26,11 @@ builder.Services.AddMediatR(cfg =>
 });
 
 builder.Services.AddAuthenticationService(builder.Configuration);
+builder.Services.AddCarter();
 
 var app = builder.Build();
 
 app.UseAuthentication();
 app.UseAuthorization();
+app.MapCarter();
 app.Run();
