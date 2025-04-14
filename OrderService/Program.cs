@@ -1,6 +1,7 @@
 using BuildingBlocks.Behaviors;
 using BuildingBlocks.Extensions;
 using BuildingBlocks.Extensions.ServiceCollection;
+using BuildingBlocks.Middlewares;
 using OrderService.Models;
 using System.Reflection;
 
@@ -27,9 +28,10 @@ builder.Services.AddMediatR(cfg =>
 
 builder.Services.AddAuthenticationService(builder.Configuration);
 builder.Services.AddCarter();
+builder.Services.AddScoped<ErrorHandlingMiddleware>();
 
 var app = builder.Build();
-
+app.UseMiddleware<ErrorHandlingMiddleware>();
 app.UseAuthentication();
 app.UseAuthorization();
 app.MapCarter();
