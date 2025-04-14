@@ -25,4 +25,6 @@ RUN dotnet publish "./OrderService.csproj" -c $BUILD_CONFIGURATION -o /app/publi
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
-ENTRYPOINT ["dotnet", "OrderService.dll"]
+COPY OrderService/docker-entrypoint.sh OrderService/wait-for ./
+ENTRYPOINT ["./docker-entrypoint.sh"]
+# ENTRYPOINT ["dotnet", "OrderService.dll"]

@@ -1,4 +1,6 @@
+using BuildingBlocks.Behaviors;
 using BuildingBlocks.Extensions;
+using BuildingBlocks.Extensions.ServiceCollection;
 using OrderService.Models;
 using System.Reflection;
 
@@ -17,5 +19,16 @@ builder.Services.AddMarten(options =>
 builder.Services.AddMassTransitService
     (builder.Configuration, Assembly.GetExecutingAssembly());
 
+builder.Services.AddMediatR(cfg =>
+{
+    cfg.RegisterServicesFromAssembly(typeof(Program).Assembly);
+    cfg.AddOpenBehavior(typeof(ValidationBehavior<,>));
+});
+
+builder.Services.AddAuthenticationService(builder.Configuration);
+
 var app = builder.Build();
+
+app.UseAuthentication();
+app.UseAuthorization();
 app.Run();
