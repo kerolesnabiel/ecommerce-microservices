@@ -17,6 +17,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PaymentService", "PaymentSe
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OrderService", "OrderService\OrderService.csproj", "{FBB71DB7-2A9E-4AEB-8035-C651BAE38C0A}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NotificationService", "NotificationService\NotificationService.csproj", "{0447917A-6332-4DC6-B8EB-F779C2B18669}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -51,6 +53,10 @@ Global
 		{FBB71DB7-2A9E-4AEB-8035-C651BAE38C0A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FBB71DB7-2A9E-4AEB-8035-C651BAE38C0A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FBB71DB7-2A9E-4AEB-8035-C651BAE38C0A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0447917A-6332-4DC6-B8EB-F779C2B18669}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0447917A-6332-4DC6-B8EB-F779C2B18669}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0447917A-6332-4DC6-B8EB-F779C2B18669}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0447917A-6332-4DC6-B8EB-F779C2B18669}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -8,7 +8,8 @@
         "product-service": "StartDebugging",
         "cart-service": "StartDebugging",
         "payment-service": "StartDebugging",
-        "order-service": "StartDebugging"
+        "order-service": "StartDebugging",
+        "notification-service": "StartDebugging"
       }
     }
   }

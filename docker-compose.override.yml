@@ -140,3 +140,32 @@ services:
     volumes:
       - ${APPDATA}/Microsoft/UserSecrets:/home/app/.microsoft/usersecrets:ro
       - ${APPDATA}/ASP.NET/Https:/home/app/.aspnet/https:ro
+
+  notification-service:
+    environment:
+      - ConnectionStrings__Database=Host=notification-service-db;Port=5432;Database=notification-service-db;Username=postgres;Password=mysecretpassword
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_HTTP_PORTS=8080
+      - ASPNETCORE_HTTPS_PORTS=8081
+      - PublicKeyUrl=http://user-service:8080/api/users/public-key
+      - RabbitMQ__Host=amqp://ecommerce-mq:5672
+      - RabbitMQ__Username=guest
+      - RabbitMQ__Password=guest
+    ports:
+      - "6050:8080"
+      - "6051:8081"
+    volumes:
+      - ${APPDATA}/Microsoft/UserSecrets:/home/app/.microsoft/usersecrets:ro
+      - ${APPDATA}/ASP.NET/Https:/home/app/.aspnet/https:ro
+    depends_on:
+      - notification-service-db
+
+  notification-service-db:
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=mysecretpassword
+      - POSTGRES_DB=notification-service-db
+    ports:
+      - "5436:5432"
+    volumes:
+      - notification_service_postgres_data:/var/lib/postgresql/data

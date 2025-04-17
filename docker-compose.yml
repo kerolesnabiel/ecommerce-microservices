@@ -50,6 +50,17 @@ services:
       context: .
       dockerfile: PaymentService/Dockerfile
 
+  notification-service:
+    image: ${DOCKER_REGISTRY-}notification-service
+    container_name: notification-service
+    build:
+      context: .
+      dockerfile: NotificationService/Dockerfile
+
+  notification-service-db:
+    container_name: notification-service-db
+    image: postgres
+
   distributed-cache:
     container_name: distributed-cache
     image: redis
@@ -63,3 +74,4 @@ volumes:
   product_service_postgres_data:
   cart_service_postgres_data:
   order_service_postgres_data:
+  notification_service_postgres_data:
