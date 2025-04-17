@@ -1,4 +1,11 @@
 services:
+  apigateway:
+    container_name: apigateway
+    image: ${DOCKER_REGISTRY-}apigateway
+    build:
+      context: .
+      dockerfile: ApiGateway/Dockerfile
+
   user-service:
     container_name: user-service
     image: ${DOCKER_REGISTRY-}user-service
