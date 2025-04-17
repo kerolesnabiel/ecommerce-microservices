@@ -7,6 +7,7 @@ using BuildingBlocks.Extensions;
 using System.Reflection;
 using Carter;
 using BuildingBlocks.Behaviors;
+using BuildingBlocks.Middlewares;
 
 var builder = WebApplication.CreateBuilder(args);
 var config = builder.Configuration;
@@ -17,6 +18,7 @@ builder.Services.AddDbContext<NotificationDbContext>(options =>
 builder.Services.AddStackExchangeRedisCache(options =>
     options.Configuration = config.GetConnectionString("Redis"));
 
+builder.Services.AddScoped<ErrorHandlingMiddleware>();
 builder.Services.AddScoped<Seeder>();
 builder.Services.AddSignalR();
 builder.Services.AddAuthenticationService(config);
@@ -42,6 +44,7 @@ var scope = app.Services.CreateScope();
 var seeder = scope.ServiceProvider.GetRequiredService<Seeder>();
 await seeder.Seed();
 
+app.UseMiddleware<ErrorHandlingMiddleware>();
 app.UseCors("AllowOrigins");
 app.MapCarter();
 app.MapHub<NotificationHub>("/api/notifications/hub");
