@@ -1,18 +1,17 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.SignalR;
+using Microsoft.Extensions.Caching.Distributed;
 
 namespace NotificationService.Hubs;
 
 [Authorize]
-public class NotificationHub : Hub
+public class NotificationHub(IDistributedCache cache) : Hub
 {
-    private readonly Dictionary<Guid, string> usersConnections = [];
-
     public async override Task OnConnectedAsync()
     {
         bool valid = Guid.TryParse(Context.UserIdentifier, out Guid userId);
         if (valid)
-            usersConnections[userId] = Context.ConnectionId;
+            await cache.SetStringAsync($"conn-{userId}", Context.ConnectionId);
 
         await base.OnConnectedAsync();
     }
@@ -22,7 +21,7 @@ public class NotificationHub : Hub
 
         bool valid = Guid.TryParse(Context.UserIdentifier, out Guid userId);
         if (valid)
-            usersConnections.Remove(userId);
+            await cache.RemoveAsync($"conn-{userId}");
 
         await base.OnDisconnectedAsync(exception);
     }

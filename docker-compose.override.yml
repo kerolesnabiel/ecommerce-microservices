@@ -144,6 +144,7 @@ services:
   notification-service:
     environment:
       - ConnectionStrings__Database=Host=notification-service-db;Port=5432;Database=notification-service-db;Username=postgres;Password=mysecretpassword
+      - ConnectionStrings__Redis=distributed-cache:6379
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_HTTP_PORTS=8080
       - ASPNETCORE_HTTPS_PORTS=8081
@@ -159,6 +160,7 @@ services:
       - ${APPDATA}/ASP.NET/Https:/home/app/.aspnet/https:ro
     depends_on:
       - notification-service-db
+      - distributed-cache
 
   notification-service-db:
     environment:
