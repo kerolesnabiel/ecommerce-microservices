@@ -1,10 +1,11 @@
-﻿using BuildingBlocks.Events;
+﻿using BuildingBlocks.Constants;
+using BuildingBlocks.Events;
 using MassTransit;
 using OrderService.Models;
 
 namespace OrderService.Features.Order.CreateOrder;
 
-public class CreateOrderConsumer(IDocumentSession session) : IConsumer<CartCheckoutEvent>
+public class CreateOrderConsumer(IDocumentSession session, IPublishEndpoint publishEndpoint) : IConsumer<CartCheckoutEvent>
 {
     public async Task Consume(ConsumeContext<CartCheckoutEvent> context)
     {
@@ -14,5 +15,15 @@ public class CreateOrderConsumer(IDocumentSession session) : IConsumer<CartCheck
 
         session.Store(order);
         await session.SaveChangesAsync();
+
+        var notificationEvent = new NotificationEvent()
+        {
+            UserId = order.UserId,
+            Type = NotificationTypes.Order,
+            Title = "Order Confirmed",
+            Message = "Your order has been confirmed!",
+            TargetUrl = $"order-service/api/orders/{order.Id}"
+        };
+        await publishEndpoint.Publish(notificationEvent);
     }
 }
