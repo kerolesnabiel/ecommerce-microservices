@@ -5,7 +5,8 @@ using NotificationService.Hubs;
 using BuildingBlocks.Extensions.ServiceCollection;
 using BuildingBlocks.Extensions;
 using System.Reflection;
-using Microsoft.Extensions.Configuration;
+using Carter;
+using BuildingBlocks.Behaviors;
 
 var builder = WebApplication.CreateBuilder(args);
 var config = builder.Configuration;
@@ -20,6 +21,10 @@ builder.Services.AddScoped<Seeder>();
 builder.Services.AddSignalR();
 builder.Services.AddAuthenticationService(config);
 builder.Services.AddMassTransitService(config, Assembly.GetExecutingAssembly());
+
+builder.Services.AddCarter();
+builder.Services.AddMediatR(cfg =>
+    cfg.RegisterServicesFromAssembly(typeof(Program).Assembly));
 
 builder.Services.AddCors(options =>
 {
@@ -38,7 +43,8 @@ var seeder = scope.ServiceProvider.GetRequiredService<Seeder>();
 await seeder.Seed();
 
 app.UseCors("AllowOrigins");
-app.MapHub<NotificationHub>("/api/notification/hub");
+app.MapCarter();
+app.MapHub<NotificationHub>("/api/notifications/hub");
 app.UseAuthentication();
 app.UseAuthorization();
 app.Run();
