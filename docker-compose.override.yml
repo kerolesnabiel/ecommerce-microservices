@@ -41,7 +41,7 @@ services:
     ports:
       - "5432:5432"
     volumes:
-      - user_service_postgres_data:/var/lib/postgresql/data
+      - user_service_postgres_data:/var/lib/postgresql
 
   product-service:
     environment:
@@ -67,7 +67,7 @@ services:
     ports:
       - "5433:5432"
     volumes:
-      - product_service_postgres_data:/var/lib/postgresql/data
+      - product_service_postgres_data:/var/lib/postgresql
 
   cart-service:
     environment:
@@ -100,7 +100,7 @@ services:
     ports:
       - "5434:5432"
     volumes:
-      - cart_service_postgres_data:/var/lib/postgresql/data
+      - cart_service_postgres_data:/var/lib/postgresql
 
   order-service:
     environment:
@@ -129,7 +129,7 @@ services:
     ports:
       - "5435:5432"
     volumes:
-      - order_service_postgres_data:/var/lib/postgresql/data
+      - order_service_postgres_data:/var/lib/postgresql
 
   distributed-cache:
     restart: always
@@ -189,4 +189,4 @@ services:
     ports:
       - "5436:5432"
     volumes:
-      - notification_service_postgres_data:/var/lib/postgresql/data
+      - notification_service_postgres_data:/var/lib/postgresql

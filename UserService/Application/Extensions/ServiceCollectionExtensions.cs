@@ -2,6 +2,7 @@
 using BuildingBlocks.User;
 using FluentValidation;
 using UserService.Application.Services;
+using AutoMapper;
 
 namespace UserService.Application.Extensions;
 
@@ -18,7 +19,7 @@ public static class ServiceCollectionExtensions
 
         services.AddValidatorsFromAssembly(applicationAssembly);
 
-        services.AddAutoMapper(applicationAssembly);
+        services.AddAutoMapper(cfg => { }, applicationAssembly);
 
         services.AddScoped<JwtService>();
         services.AddScoped<IUserContext, UserContext>();
