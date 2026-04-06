@@ -26,11 +26,14 @@ builder.Services.AddMediatR(cfg =>
     cfg.AddOpenBehavior(typeof(ValidationBehavior<,>));
 });
 
+builder.Services.AddSwagger("Order");
+
 builder.Services.AddAuthenticationService(builder.Configuration);
 builder.Services.AddCarter();
 builder.Services.AddScoped<ErrorHandlingMiddleware>();
 
 var app = builder.Build();
+app.UseSwagger();
 app.UseMiddleware<ErrorHandlingMiddleware>();
 app.UseAuthentication();
 app.UseAuthorization();

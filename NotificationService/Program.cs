@@ -18,6 +18,7 @@ builder.Services.AddDbContext<NotificationDbContext>(options =>
 builder.Services.AddStackExchangeRedisCache(options =>
     options.Configuration = config.GetConnectionString("Redis"));
 
+builder.Services.AddSwagger("Notification");
 builder.Services.AddScoped<ErrorHandlingMiddleware>();
 builder.Services.AddScoped<Seeder>();
 builder.Services.AddSignalR();
@@ -45,6 +46,7 @@ var seeder = scope.ServiceProvider.GetRequiredService<Seeder>();
 await seeder.Seed();
 
 app.UseMiddleware<ErrorHandlingMiddleware>();
+app.UseSwagger();
 app.UseCors("AllowOrigins");
 app.MapCarter();
 app.MapHub<NotificationHub>("/api/notifications/hub");

@@ -1,7 +1,8 @@
+using BuildingBlocks.Behaviors;
 using BuildingBlocks.Extensions.ServiceCollection;
 using BuildingBlocks.Middlewares;
-using BuildingBlocks.Behaviors;
 using BuildingBlocks.User;
+using Microsoft.OpenApi;
 
 var builder = WebApplication.CreateBuilder(args);
 var assembly = typeof(Program).Assembly;
@@ -18,6 +19,8 @@ builder.Services.AddMarten(cfg => cfg.Connection
     (builder.Configuration.GetConnectionString("DefaultConnection")!))
     .UseLightweightSessions();
 
+builder.Services.AddSwagger("Product");
+
 builder.Services.AddCarter();
 builder.Services.AddScoped<ErrorHandlingMiddleware>();
 
@@ -30,6 +33,8 @@ builder.Services.AddScoped<IUserContext, UserContext>();
 builder.Services.AddGrpc();
 
 var app = builder.Build();
+
+app.UseSwagger();
 
 app.UseAuthentication();
 app.UseAuthorization();
